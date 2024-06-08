@@ -25,7 +25,7 @@ export default function ChatSection() {
   });
 
   return (
-    <div className="space-y-4 max-w-5xl w-full">
+    <>
       <ChatMessages
         messages={messages}
         isLoading={isLoading}
@@ -39,6 +39,6 @@ export default function ChatSection() {
         isLoading={isLoading}
         multiModal={true}
       />
-    </div>
+    </>
   );
 }
