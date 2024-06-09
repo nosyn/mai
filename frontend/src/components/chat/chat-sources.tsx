@@ -1,8 +1,12 @@
 import { Check, Copy } from "lucide-react";
 import { useMemo } from "react";
-import { Button } from "../button";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "../hover-card";
-import { getStaticFileDataUrl } from "../lib/url";
+import { Button } from "../ui/button";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "../ui/hover-card";
+import { getStaticFileDataUrl } from "@/lib/helpers";
 import { SourceData, SourceNode } from "./index";
 import { useCopyToClipboard } from "./use-copy-to-clipboard";
 import PdfDialog from "./widgets/PdfDialog";

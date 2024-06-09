@@ -1,5 +1,5 @@
 import { PDFViewer, PdfFocusProvider } from "@llamaindex/pdf-viewer";
-import { Button } from "../../button";
+import { Button } from "../../ui/button";
 import {
   Drawer,
   DrawerClose,
@@ -8,7 +8,7 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from "../../drawer";
+} from "../../ui/drawer";
 
 export interface PdfDialogProps {
   documentId: string;

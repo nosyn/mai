@@ -1,4 +1,4 @@
-import { initObservability } from "@/app/observability";
+import { initObservability } from "@/observability";
 import { Message, StreamData, StreamingTextResponse } from "ai";
 import { ChatMessage, MessageContent, Settings } from "llamaindex";
 import { NextRequest, NextResponse } from "next/server";

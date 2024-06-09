@@ -3,6 +3,9 @@ import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
 import "./markdown.css";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import SideBar from "@/components/layout/side-bar";
+import Header from "@/components/layout/header";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -26,7 +29,15 @@ export default function RootLayout({
           fontSans.variable,
         )}
       >
-        {children}
+        <TooltipProvider>
+          <div className="grid h-screen w-full pl-[56px]">
+            <SideBar />
+            <div className="flex flex-col">
+              <Header />
+              {children}
+            </div>
+          </div>
+        </TooltipProvider>
       </body>
     </html>
   );

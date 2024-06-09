@@ -1,6 +1,6 @@
 import { PauseCircle, RefreshCw } from "lucide-react";
 
-import { Button } from "../button";
+import { Button } from "../ui/button";
 import { ChatHandler } from "./chat.interface";
 
 export default function ChatActions(
