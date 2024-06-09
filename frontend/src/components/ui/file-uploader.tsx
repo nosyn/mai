@@ -97,9 +97,10 @@ export default function FileUploader({
         {uploading ? (
           <Loader2 className="h-4 w-4 animate-spin" />
         ) : (
-          <Paperclip className="-rotate-45 w-4 h-4" />
+          <Paperclip className="size-4" />
         )}
       </label>
+      <span className="sr-only">Attach file</span>
     </div>
   );
 }

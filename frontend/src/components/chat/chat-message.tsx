@@ -2,7 +2,7 @@ import { Check, Copy } from "lucide-react";
 
 import { Message } from "ai";
 import { Fragment } from "react";
-import { Button } from "../button";
+import { Button } from "../ui/button";
 import ChatAvatar from "./chat-avatar";
 import { ChatEvents } from "./chat-events";
 import { ChatImage } from "./chat-image";

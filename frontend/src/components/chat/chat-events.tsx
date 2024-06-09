@@ -1,11 +1,11 @@
 import { ChevronDown, ChevronRight, Loader2 } from "lucide-react";
 import { useState } from "react";
-import { Button } from "../button";
+import { Button } from "../ui/button";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "../collapsible";
+} from "../ui/collapsible";
 import { EventData } from "./index";
 
 export function ChatEvents({
