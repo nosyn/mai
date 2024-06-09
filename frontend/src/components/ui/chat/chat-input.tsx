@@ -57,12 +57,12 @@ export default function ChatInput(
   return (
     <form
       onSubmit={onSubmit}
-      className="rounded-xl bg-white p-4 shadow-xl space-y-4"
+      className="rounded-xl bg-white p-4 shadow-xl space-y-4 w-full"
     >
       {imageUrl && (
         <UploadImagePreview url={imageUrl} onRemove={onRemovePreviewImage} />
       )}
-      <div className="flex w-full items-start justify-between gap-4 ">
+      <div className="flex items-start justify-between gap-4">
         <Input
           autoFocus
           name="message"
