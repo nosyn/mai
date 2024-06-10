@@ -10,9 +10,11 @@ export async function getDataSource() {
   const numberOfDocs = Object.keys(
     (storageContext.docStore as SimpleDocumentStore).toDict(),
   ).length;
+
   if (numberOfDocs === 0) {
     return null;
   }
+
   return await VectorStoreIndex.init({
     storageContext,
   });

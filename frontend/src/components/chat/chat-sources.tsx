@@ -1,11 +1,11 @@
 import { Check, Copy } from "lucide-react";
 import { useMemo } from "react";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
-} from "../ui/hover-card";
+} from "@/components/ui/hover-card";
 import { getStaticFileDataUrl } from "@/lib/helpers";
 import { SourceData, SourceNode } from "./index";
 import { useCopyToClipboard } from "./use-copy-to-clipboard";

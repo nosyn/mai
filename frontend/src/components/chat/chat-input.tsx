@@ -2,30 +2,23 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { CornerDownLeft, Mic } from "lucide-react";
-import { KeyboardEvent, useState } from "react";
-import FileUploader from "../ui/file-uploader";
+import { useState } from "react";
+import FileUploader from "@/components/ui/file-uploader";
 import UploadImagePreview from "./upload-image-preview";
-import { ChatHandler } from "./chat.interface";
 
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { UseChatHelpers } from "ai/react";
 
-export default function ChatInput(
-  props: Pick<
-    ChatHandler,
-    | "isLoading"
-    | "input"
-    | "onFileUpload"
-    | "onFileError"
-    | "handleSubmit"
-    | "handleInputChange"
-  > & {
-    multiModal?: boolean;
-  },
-) {
+type ChatInputProps = Pick<
+  UseChatHelpers,
+  "isLoading" | "input" | "handleSubmit" | "handleInputChange"
+>;
+
+export default function ChatInput(props: ChatInputProps) {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -51,21 +44,17 @@ export default function ChatInput(
     setImageUrl(base64);
   };
 
-  const handleUploadFile = async (file: File) => {
-    try {
-      if (props.multiModal && file.type.startsWith("image/")) {
-        return await handleUploadImageFile(file);
-      }
-      props.onFileUpload?.(file);
-    } catch (error: any) {
-      props.onFileError?.(error.message);
-    }
+  const onFileUploadError = (fileType: string) => {
+    alert(`Unsupported file type: ${fileType}`);
   };
 
-  const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault(); // Prevent adding a new line
-      props.handleSubmit(e);
+  const handleUploadFile = async (file: File) => {
+    try {
+      if (file.type.startsWith("image/")) {
+        return await handleUploadImageFile(file);
+      }
+    } catch (error) {
+      onFileUploadError(file.type);
     }
   };
 
@@ -84,7 +73,6 @@ export default function ChatInput(
         className="min-h-12 resize-none border-0 p-3 shadow-none focus-visible:ring-0"
         value={props.input}
         onChange={props.handleInputChange}
-        // onKeyDown={handleKeyDown}
       />
 
       {imageUrl && (
@@ -95,7 +83,9 @@ export default function ChatInput(
           <TooltipTrigger asChild>
             <FileUploader
               onFileUpload={handleUploadFile}
-              onFileError={props.onFileError}
+              onFileError={(errorMessage) => {
+                onFileUploadError(errorMessage);
+              }}
             />
           </TooltipTrigger>
           <TooltipContent side="top">Attach File</TooltipContent>

@@ -3,10 +3,10 @@ import { useEffect, useRef } from "react";
 
 import ChatActions from "./chat-actions";
 import ChatMessage from "./chat-message";
-import { ChatHandler } from "./chat.interface";
+import { UseChatHelpers } from "ai/react";
 
 export default function ChatMessages(
-  props: Pick<ChatHandler, "messages" | "isLoading" | "reload" | "stop">,
+  props: Pick<UseChatHelpers, "messages" | "isLoading" | "reload" | "stop">,
 ) {
   const scrollableChatContainerRef = useRef<HTMLDivElement>(null);
   const messageLength = props.messages.length;
@@ -21,9 +21,8 @@ export default function ChatMessages(
 
   const isLastMessageFromAssistant =
     messageLength > 0 && lastMessage?.role !== "user";
-  const showReload =
-    props.reload && !props.isLoading && isLastMessageFromAssistant;
-  const showStop = props.stop && props.isLoading;
+  const showReload = !props.isLoading && isLastMessageFromAssistant;
+  const showStop = props.isLoading;
 
   // `isPending` indicate
   // that stream response is not yet received from the server,
