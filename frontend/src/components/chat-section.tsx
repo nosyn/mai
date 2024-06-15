@@ -2,6 +2,7 @@
 
 import { useChat } from "ai/react";
 import { ChatInput, ChatMessages } from "./chat";
+import { Badge } from "./ui/badge";
 
 export default function ChatSection() {
   const {
@@ -25,7 +26,10 @@ export default function ChatSection() {
   });
 
   return (
-    <>
+    <div className="relative flex h-full min-h-[50vh] flex-col rounded-xl bg-muted/50 p-4 lg:col-span-2">
+      <Badge variant="outline" className="absolute right-3 top-3">
+        Output
+      </Badge>
       <ChatMessages
         messages={messages}
         isLoading={isLoading}
@@ -37,8 +41,7 @@ export default function ChatSection() {
         handleSubmit={handleSubmit}
         handleInputChange={handleInputChange}
         isLoading={isLoading}
-        multiModal={true}
       />
-    </>
+    </div>
   );
 }

@@ -1,10 +1,10 @@
 import { PauseCircle, RefreshCw } from "lucide-react";
 
-import { Button } from "../ui/button";
-import { ChatHandler } from "./chat.interface";
+import { Button } from "@/components/ui/button";
+import { UseChatHelpers } from "ai/react";
 
 export default function ChatActions(
-  props: Pick<ChatHandler, "stop" | "reload"> & {
+  props: Pick<UseChatHelpers, "stop" | "reload"> & {
     showReload?: boolean;
     showStop?: boolean;
   },
@@ -18,7 +18,13 @@ export default function ChatActions(
         </Button>
       )}
       {props.showReload && (
-        <Button variant="outline" size="sm" onClick={props.reload}>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => {
+            props.reload();
+          }}
+        >
           <RefreshCw className="mr-2 h-4 w-4" />
           Regenerate
         </Button>
