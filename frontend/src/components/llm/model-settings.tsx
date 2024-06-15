@@ -70,16 +70,37 @@ export default async function ModelSettings() {
           </div>
           <div className="grid gap-3">
             <Label htmlFor="temperature">Temperature</Label>
-            <Input id="temperature" type="number" placeholder="0.4" />
+            <Input
+              id="temperature"
+              type="number"
+              defaultValue={0.4}
+              min={0}
+              max={1}
+              step={0.1}
+            />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div className="grid gap-3">
               <Label htmlFor="top-p">Top P</Label>
-              <Input id="top-p" type="number" placeholder="0.7" />
+              <Input
+                id="top-p"
+                type="number"
+                defaultValue={0.4}
+                min={0}
+                max={1}
+                step={0.1}
+              />
             </div>
             <div className="grid gap-3">
               <Label htmlFor="top-k">Top K</Label>
-              <Input id="top-k" type="number" placeholder="0.0" />
+              <Input
+                id="top-k"
+                type="number"
+                defaultValue={0.2}
+                min={0}
+                max={1}
+                step={0.1}
+              />
             </div>
           </div>
         </fieldset>

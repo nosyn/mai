@@ -18,18 +18,39 @@ type ChatInputProps = Pick<
   "isLoading" | "input" | "handleSubmit" | "handleInputChange"
 >;
 
-export default function ChatInput(props: ChatInputProps) {
+export default function ChatInput({
+  handleSubmit,
+  handleInputChange,
+  input,
+  isLoading,
+}: ChatInputProps) {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     if (imageUrl) {
-      props.handleSubmit(e, {
-        data: { imageUrl: imageUrl },
+      handleSubmit(e, {
+        data: {
+          imageUrl: imageUrl,
+        },
       });
       setImageUrl(null);
       return;
     }
-    props.handleSubmit(e);
+
+    handleSubmit(e, {
+      options: {
+        body: {
+          llmConfig: {
+            topK:
+              (document.querySelector("#top-k") as HTMLInputElement)?.value ||
+              -1,
+            temperature:
+              (document.querySelector("#temperature") as HTMLInputElement)
+                ?.value || -1,
+          },
+        },
+      },
+    });
   };
 
   const onRemovePreviewImage = () => setImageUrl(null);
@@ -71,8 +92,8 @@ export default function ChatInput(props: ChatInputProps) {
         id="message"
         placeholder="Type your message here..."
         className="min-h-12 resize-none border-0 p-3 shadow-none focus-visible:ring-0"
-        value={props.input}
-        onChange={props.handleInputChange}
+        value={input}
+        onChange={handleInputChange}
       />
 
       {imageUrl && (
@@ -103,7 +124,7 @@ export default function ChatInput(props: ChatInputProps) {
           type="submit"
           size="sm"
           className="ml-auto gap-1.5"
-          disabled={props.isLoading}
+          disabled={isLoading}
         >
           Send Message
           <CornerDownLeft className="size-3.5" />

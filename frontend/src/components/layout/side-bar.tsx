@@ -61,8 +61,8 @@ export default function SideBar() {
         </Button>
       </div>
       <nav className="grid gap-1 p-2">
-        {mainNavigation.map(({ Icon, content, href }) => (
-          <Tooltip key={href}>
+        {mainNavigation.map(({ Icon, content, href }, index) => (
+          <Tooltip key={index}>
             <TooltipTrigger asChild>
               <Button
                 asChild
