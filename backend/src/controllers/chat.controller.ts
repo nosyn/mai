@@ -6,9 +6,9 @@ import {
 } from "ai";
 import { Elysia } from "elysia";
 import { ChatMessage, MessageContent, Settings } from "llamaindex";
-import { createChatEngine } from "@/controllers/chat/engine/chat";
-import { LlamaIndexStream } from "@/controllers/chat/llamaindex-stream";
-import { createCallbackManager } from "@/controllers/chat/stream-helper";
+import { createChatEngine } from "@/libs/ai/engine/chat";
+import { LlamaIndexStream } from "@/libs/ai/llamaindex-stream";
+import { createCallbackManager } from "@/libs/ai/stream-helper";
 
 const convertMessageContent = (
   textMessage: string,
