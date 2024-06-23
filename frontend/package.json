@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "generate": "tsx app/api/chat/engine/generate.ts"
+    "generate": "tsx src/app/api/chat/engine/generate.ts"
   },
   "dependencies": {
     "@e2b/code-interpreter": "^0.0.5",
