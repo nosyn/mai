@@ -1,15 +1,14 @@
 import {
   Book,
   Bot,
-  Code2,
   LifeBuoy,
   LucideIcon,
   Settings2,
-  SquareUser,
-  TerminalSquare,
   Square,
+  TerminalSquare,
 } from "lucide-react";
 
+import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import {
   Tooltip,
@@ -17,6 +16,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import Link from "next/link";
+import AccountMenu from "../account-menu";
 
 type Navigation = {
   Icon: LucideIcon;
@@ -36,14 +36,14 @@ const mainNavigation: Navigation = [
     href: "/bot",
   },
   {
-    Icon: Code2,
-    content: "API",
-    href: "#",
+    Icon: Icons.dataSources,
+    content: "Data Sources",
+    href: "/data-sources",
   },
   {
     Icon: Book,
     content: "Documentation",
-    href: "#",
+    href: "/google",
   },
   {
     Icon: Settings2,
@@ -98,21 +98,7 @@ export default function SideBar() {
             Help
           </TooltipContent>
         </Tooltip>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="mt-auto rounded-lg"
-              aria-label="Account"
-            >
-              <SquareUser className="size-5" />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent side="right" sideOffset={5}>
-            Account
-          </TooltipContent>
-        </Tooltip>
+        <AccountMenu />
       </nav>
     </aside>
   );

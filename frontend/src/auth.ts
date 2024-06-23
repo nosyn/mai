@@ -12,14 +12,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
+      const isLoginPage = nextUrl.pathname.startsWith("/login");
 
-      // const isOnDashboard = nextUrl.pathname.startsWith("/dashboard");
-      // if (isOnDashboard) {
-      // if (isLoggedIn) return true;
-      //   return false; // Redirect unauthenticated users to login page
-      // } else if (isLoggedIn) {
-      //   return Response.redirect(new URL("/dashboard", nextUrl));
-      // }
+      if (!isLoggedIn) {
+        return false;
+      }
+
+      if (isLoginPage) {
+        return Response.redirect(new URL("/", nextUrl));
+      }
+
       return true;
     },
   },

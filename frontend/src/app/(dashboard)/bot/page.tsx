@@ -1,8 +1,8 @@
 import ChatSection from "@/components/chat-section";
 
-export default function Home() {
+export default function BotPage() {
   return (
-    <main className="h-full p-4 bg-slate-400">
+    <main className="p-4 bg-slate-400">
       <ChatSection />
     </main>
   );

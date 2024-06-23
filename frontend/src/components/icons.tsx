@@ -23,7 +23,9 @@ import {
   Twitter,
   User,
   X,
+  LibrarySquare,
   type LucideIcon,
+  SquareUser,
 } from "lucide-react";
 
 export type Icon = LucideIcon;
@@ -43,7 +45,7 @@ export const Icons = {
   ellipsis: MoreVertical,
   add: Plus,
   warning: AlertTriangle,
-  user: User,
+  user: SquareUser,
   arrowRight: ArrowRight,
   help: HelpCircle,
   pizza: Pizza,
@@ -87,6 +89,7 @@ export const Icons = {
       </g>
     </svg>
   ),
+  dataSources: LibrarySquare,
   twitter: Twitter,
   check: Check,
 };
