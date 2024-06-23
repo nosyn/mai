@@ -1,0 +1,21 @@
+{
+  "name": "backend",
+  "version": "1.0.50",
+  "scripts": {
+    "dev": "bun --watch src/index.ts",
+    "build": "bun build src/index.ts",
+    "start": "NODE_ENV=production bun src/index.ts",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "@ai-sdk/openai": "^0.0.33",
+    "@elysiajs/cors": "^1.0.2",
+    "ai": "^3.2.5",
+    "elysia": "latest",
+    "llamaindex": "0.3.9"
+  },
+  "devDependencies": {
+    "bun-types": "latest"
+  },
+  "module": "src/index.js"
+}
