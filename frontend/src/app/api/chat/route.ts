@@ -56,8 +56,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log("data: ", data);
-    console.log("res: ", rest);
     const chatEngine = await createChatEngine();
 
     // Convert message content from Vercel/AI format to LlamaIndex/OpenAI format
