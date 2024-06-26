@@ -1,15 +1,18 @@
-import { DataSource } from "@/components/data-source";
-import { getCollections } from "@/lib/actions/vector-db/qdrant";
+import {
+  CreateDataSource,
+  DataSource,
+} from "@/components/data-sources/data-source";
+import client from "@/lib/client";
 
-export default async function GooglePage() {
-  const { collections } = await getCollections();
+export default async function DataSourcesPage() {
+  const { dataSources } = await client.getDataSources();
 
   return (
     <main className="p-4">
-      Data Sources
-      <div className="grid grid-cols-3 gap-4">
-        {collections.map((collection) => (
-          <DataSource name={collection.name} key={collection.name} />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2">
+        <CreateDataSource />
+        {dataSources.map((ds) => (
+          <DataSource name={ds.name} key={ds.name} />
         ))}
       </div>
     </main>

@@ -1,6 +1,6 @@
 import cors from "@elysiajs/cors";
 import { Elysia } from "elysia";
-import { initSettings } from "./controllers/chat/engine/settings";
+import { initSettings } from "./libs/ai/engine/settings";
 import { indexController } from "./controllers";
 
 const main = () => {

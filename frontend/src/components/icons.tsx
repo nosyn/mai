@@ -11,21 +11,21 @@ import {
   HelpCircle,
   Image,
   Laptop,
+  LibrarySquare,
   Loader2,
+  type LucideIcon,
   LucideProps,
   Moon,
   MoreVertical,
-  Pizza,
+  Package,
+  PackagePlus,
   Plus,
   Settings,
+  SquareUser,
   SunMedium,
   Trash,
   Twitter,
-  User,
   X,
-  LibrarySquare,
-  type LucideIcon,
-  SquareUser,
 } from "lucide-react";
 
 export type Icon = LucideIcon;
@@ -48,7 +48,6 @@ export const Icons = {
   user: SquareUser,
   arrowRight: ArrowRight,
   help: HelpCircle,
-  pizza: Pizza,
   sun: SunMedium,
   moon: Moon,
   laptop: Laptop,
@@ -89,7 +88,8 @@ export const Icons = {
       </g>
     </svg>
   ),
-  dataSources: LibrarySquare,
   twitter: Twitter,
   check: Check,
+  createDataSource: PackagePlus,
+  dataSources: Package,
 };
