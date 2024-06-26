@@ -11,6 +11,7 @@ import {
   HelpCircle,
   Image,
   Laptop,
+  LibrarySquare,
   Loader2,
   type LucideIcon,
   LucideProps,
