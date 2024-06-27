@@ -7,7 +7,7 @@ import {
   OpenAI,
   OpenAIEmbedding,
   Settings,
-} from "llamaindex";
+} from 'llamaindex';
 
 const CHUNK_SIZE = 512;
 const CHUNK_OVERLAP = 20;
@@ -21,13 +21,13 @@ export const initSettings = async () => {
   }
 
   switch (process.env.MODEL_PROVIDER) {
-    case "ollama":
+    case 'ollama':
       initOllama();
       break;
-    case "anthropic":
+    case 'anthropic':
       initAnthropic();
       break;
-    case "gemini":
+    case 'gemini':
       initGemini();
       break;
     default:
@@ -40,7 +40,7 @@ export const initSettings = async () => {
 
 function initOpenAI() {
   Settings.llm = new OpenAI({
-    model: process.env.MODEL ?? "gpt-3.5-turbo",
+    model: process.env.MODEL ?? 'gpt-3.5-turbo',
     maxTokens: 512,
   });
   Settings.embedModel = new OpenAIEmbedding({
@@ -52,11 +52,11 @@ function initOpenAI() {
 }
 
 function initOllama() {
-  throw new Error("Ollama models have not implemented yet");
+  throw new Error('Ollama models have not implemented yet');
 }
 
 function initAnthropic() {
-  throw new Error("Anthropic models have not implemented yet");
+  throw new Error('Anthropic models have not implemented yet');
 }
 
 function initGemini() {

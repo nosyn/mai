@@ -41,6 +41,12 @@ export default function ChatInput({
       options: {
         body: {
           llmConfig: {
+            model:
+              (document.querySelector("#model") as HTMLInputElement)?.value ||
+              -1,
+            topP:
+              (document.querySelector("#top-p") as HTMLInputElement)?.value ||
+              -1,
             topK:
               (document.querySelector("#top-k") as HTMLInputElement)?.value ||
               -1,

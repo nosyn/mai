@@ -3,12 +3,12 @@ import {
   Message,
   StreamData,
   StreamingTextResponse,
-} from "ai";
-import { Elysia } from "elysia";
-import { ChatMessage, MessageContent, Settings } from "llamaindex";
-import { createChatEngine } from "@/libs/ai/engine/chat";
-import { LlamaIndexStream } from "@/libs/ai/llamaindex-stream";
-import { createCallbackManager } from "@/libs/ai/stream-helper";
+} from 'ai';
+import { Elysia } from 'elysia';
+import { ChatMessage, MessageContent, Settings } from 'llamaindex';
+import { createChatEngine } from '@/libs/ai/engine/chat';
+import { LlamaIndexStream } from '@/libs/ai/llamaindex-stream';
+import { createCallbackManager } from '@/libs/ai/stream-helper';
 
 const convertMessageContent = (
   textMessage: string,
@@ -17,11 +17,11 @@ const convertMessageContent = (
   if (!imageUrl) return textMessage;
   return [
     {
-      type: "text",
+      type: 'text',
       text: textMessage,
     },
     {
-      type: "image_url",
+      type: 'image_url',
       image_url: {
         url: imageUrl,
       },
@@ -30,20 +30,21 @@ const convertMessageContent = (
 };
 
 export const chatController = new Elysia().post(
-  "/api/chat",
+  '/api/chat',
   async ({ body, error }) => {
     const {
       messages,
       data,
       ...rest
-    }: { messages: Message[]; data: ChatRequestOptions["data"] } = body as any;
+    }: { messages: Message[]; data: ChatRequestOptions['data'] } = body as any;
     const userMessage = messages.pop();
-    if (!messages || !userMessage || userMessage.role !== "user") {
+    if (!messages || !userMessage || userMessage.role !== 'user') {
       return error(400, {
         error:
-          "messages are required in the request body and the last message must be from the user",
+          'messages are required in the request body and the last message must be from the user',
       });
     }
+
     const chatEngine = await createChatEngine();
     // Convert message content from Vercel/AI format to LlamaIndex/OpenAI format
     const userMessageContent = convertMessageContent(
@@ -77,7 +78,7 @@ export const chatController = new Elysia().post(
   },
   {
     error: ({ error }) => {
-      console.error("Error occurred during: ", error);
+      console.error('Error occurred during: ', error);
     },
   }
 );
