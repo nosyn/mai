@@ -1,22 +1,10 @@
-import {
-  Book,
-  Bot,
-  LifeBuoy,
-  LucideIcon,
-  Settings2,
-  Square,
-  TerminalSquare,
-} from "lucide-react";
-
-import { Icons } from "@/components/icons";
-import { Button } from "@/components/ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import Link from "next/link";
-import AccountMenu from "../account-menu";
+import { Icons } from '@/components/icons';
+import { Button } from '@/components/ui/button';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { APP_ROUTE } from '@/lib/const';
+import { Book, LifeBuoy, LucideIcon, Settings2, Square, TerminalSquare } from 'lucide-react';
+import Link from 'next/link';
+import AccountMenu from '../account-menu';
 
 type Navigation = {
   Icon: LucideIcon;
@@ -26,29 +14,29 @@ type Navigation = {
 
 const mainNavigation: Navigation = [
   {
-    Icon: TerminalSquare,
-    content: "Playground",
-    href: "/",
+    Icon: Icons.playground,
+    content: 'Playground',
+    href: APP_ROUTE.INDEX,
   },
   {
-    Icon: Bot,
-    content: "Bot",
-    href: "/bot",
+    Icon: Icons.bot,
+    content: 'Bot',
+    href: APP_ROUTE.BOTS.INDEX,
   },
   {
     Icon: Icons.dataSources,
-    content: "Data Sources",
-    href: "/data-sources",
+    content: 'Data Sources',
+    href: APP_ROUTE.DATA_SOURCES.INDEX,
   },
   {
     Icon: Book,
-    content: "Documentation",
-    href: "/google",
+    content: 'Documentation',
+    href: '/google',
   },
   {
     Icon: Settings2,
-    content: "Settings",
-    href: "#",
+    content: 'Settings',
+    href: '#',
   },
 ];
 
@@ -64,13 +52,7 @@ export default function SideBar() {
         {mainNavigation.map(({ Icon, content, href }, index) => (
           <Tooltip key={index}>
             <TooltipTrigger asChild>
-              <Button
-                asChild
-                variant="ghost"
-                size="icon"
-                className="rounded-lg"
-                aria-label="Models"
-              >
+              <Button asChild variant="ghost" size="icon" className="rounded-lg" aria-label="Models">
                 <Link href={href}>
                   <Icon className="size-5" />
                 </Link>
@@ -85,12 +67,7 @@ export default function SideBar() {
       <nav className="mt-auto grid gap-1 p-2">
         <Tooltip>
           <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="mt-auto rounded-lg"
-              aria-label="Help"
-            >
+            <Button variant="ghost" size="icon" className="mt-auto rounded-lg" aria-label="Help">
               <LifeBuoy className="size-5" />
             </Button>
           </TooltipTrigger>

@@ -1,24 +1,15 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 
-import Link from "next/link";
-import { Icons } from "../icons";
-import { Button } from "../ui/button";
+import Link from 'next/link';
+import { Icons } from '../icons';
+import { Button } from '../ui/button';
 
 export function DataSource({ name }: { name: string }) {
   return (
     <Card>
       <CardHeader className="p-4">
         <CardTitle>{name}</CardTitle>
-        <CardDescription>
-          <p>Last updated: 2 hours ago</p>
-        </CardDescription>
+        <CardDescription>Last updated: 2 hours ago</CardDescription>
       </CardHeader>
       <CardContent className="grid px-4 pb-2">
         <div className="flex items-center justify-between">
@@ -50,22 +41,21 @@ export function DataSource({ name }: { name: string }) {
 
 export function CreateDataSource() {
   return (
-    <Card>
+    <Card className="flex flex-col justify-between">
       <CardHeader className="space-y-2">
         <CardTitle>Data Sources</CardTitle>
         <CardDescription>
-          Uploading your existing documents or connect to your existing data
-          sources such as Google Drive, Notion...
+          Uploading your existing documents or connect to your existing data sources such as Google Drive, Notion...
         </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardFooter>
         <Button variant="secondary" className="shadow-none gap-2" asChild>
-          <Link href={"/data-sources/create"}>
+          <Link href={'/data-sources/create'}>
             <Icons.createDataSource className="h-4 w-4" />
             Create
           </Link>
         </Button>
-      </CardContent>
+      </CardFooter>
     </Card>
   );
 }

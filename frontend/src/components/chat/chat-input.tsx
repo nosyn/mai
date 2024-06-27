@@ -1,29 +1,17 @@
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { CornerDownLeft, Mic } from "lucide-react";
-import { useState } from "react";
-import FileUploader from "@/components/ui/file-uploader";
-import UploadImagePreview from "./upload-image-preview";
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { CornerDownLeft, Mic } from 'lucide-react';
+import { useState } from 'react';
+import FileUploader from '@/components/ui/file-uploader';
+import UploadImagePreview from './upload-image-preview';
 
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { UseChatHelpers } from "ai/react";
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { UseChatHelpers } from 'ai/react';
 
-type ChatInputProps = Pick<
-  UseChatHelpers,
-  "isLoading" | "input" | "handleSubmit" | "handleInputChange"
->;
+type ChatInputProps = Pick<UseChatHelpers, 'isLoading' | 'input' | 'handleSubmit' | 'handleInputChange'>;
 
-export default function ChatInput({
-  handleSubmit,
-  handleInputChange,
-  input,
-  isLoading,
-}: ChatInputProps) {
+export default function ChatInput({ handleSubmit, handleInputChange, input, isLoading }: ChatInputProps) {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -41,18 +29,10 @@ export default function ChatInput({
       options: {
         body: {
           llmConfig: {
-            model:
-              (document.querySelector("#model") as HTMLInputElement)?.value ||
-              -1,
-            topP:
-              (document.querySelector("#top-p") as HTMLInputElement)?.value ||
-              -1,
-            topK:
-              (document.querySelector("#top-k") as HTMLInputElement)?.value ||
-              -1,
-            temperature:
-              (document.querySelector("#temperature") as HTMLInputElement)
-                ?.value || -1,
+            model: (document.querySelector('#model') as HTMLInputElement)?.value || -1,
+            topP: (document.querySelector('#top-p') as HTMLInputElement)?.value || -1,
+            topK: (document.querySelector('#top-k') as HTMLInputElement)?.value || -1,
+            temperature: (document.querySelector('#temperature') as HTMLInputElement)?.value || -1,
           },
         },
       },
@@ -77,7 +57,7 @@ export default function ChatInput({
 
   const handleUploadFile = async (file: File) => {
     try {
-      if (file.type.startsWith("image/")) {
+      if (file.type.startsWith('image/')) {
         return await handleUploadImageFile(file);
       }
     } catch (error) {
@@ -102,11 +82,9 @@ export default function ChatInput({
         onChange={handleInputChange}
       />
 
-      {imageUrl && (
-        <UploadImagePreview url={imageUrl} onRemove={onRemovePreviewImage} />
-      )}
+      {imageUrl && <UploadImagePreview url={imageUrl} onRemove={onRemovePreviewImage} />}
       <div className="flex items-center p-3 pt-0">
-        <Tooltip>
+        {/* <Tooltip>
           <TooltipTrigger asChild>
             <FileUploader
               onFileUpload={handleUploadFile}
@@ -116,7 +94,7 @@ export default function ChatInput({
             />
           </TooltipTrigger>
           <TooltipContent side="top">Attach File</TooltipContent>
-        </Tooltip>
+        </Tooltip> */}
         <Tooltip>
           <TooltipTrigger asChild>
             <Button variant="ghost" size="icon">
@@ -126,12 +104,7 @@ export default function ChatInput({
           </TooltipTrigger>
           <TooltipContent side="top">Use Microphone</TooltipContent>
         </Tooltip>
-        <Button
-          type="submit"
-          size="sm"
-          className="ml-auto gap-1.5"
-          disabled={isLoading}
-        >
+        <Button type="submit" size="sm" className="ml-auto gap-1.5" disabled={isLoading}>
           Send Message
           <CornerDownLeft className="size-3.5" />
         </Button>

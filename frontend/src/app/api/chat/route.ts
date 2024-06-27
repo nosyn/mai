@@ -1,35 +1,27 @@
-import { initObservability } from "@/observability";
-import {
-  ChatRequestOptions,
-  Message,
-  StreamData,
-  StreamingTextResponse,
-} from "ai";
-import { ChatMessage, MessageContent, Settings } from "llamaindex";
-import { NextRequest, NextResponse } from "next/server";
-import { createChatEngine } from "./engine/chat";
-import { initSettings } from "./engine/settings";
-import { LlamaIndexStream } from "./llamaindex-stream";
-import { createCallbackManager } from "./stream-helper";
+import { initObservability } from '@/lib/observability';
+import { ChatRequestOptions, Message, StreamData, StreamingTextResponse } from 'ai';
+import { ChatMessage, MessageContent, Settings } from 'llamaindex';
+import { NextRequest, NextResponse } from 'next/server';
+import { createChatEngine } from './engine/chat';
+import { initSettings } from './engine/settings';
+import { LlamaIndexStream } from './llamaindex-stream';
+import { createCallbackManager } from './stream-helper';
 
 initObservability();
 initSettings();
 
-export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
-const convertMessageContent = (
-  textMessage: string,
-  imageUrl: string | undefined,
-): MessageContent => {
+const convertMessageContent = (textMessage: string, imageUrl: string | undefined): MessageContent => {
   if (!imageUrl) return textMessage;
   return [
     {
-      type: "text",
+      type: 'text',
       text: textMessage,
     },
     {
-      type: "image_url",
+      type: 'image_url',
       image_url: {
         url: imageUrl,
       },
@@ -40,17 +32,12 @@ const convertMessageContent = (
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const {
-      messages,
-      data,
-      ...rest
-    }: { messages: Message[]; data: ChatRequestOptions["data"] } = body;
+    const { messages, data, ...rest }: { messages: Message[]; data: ChatRequestOptions['data'] } = body;
     const userMessage = messages.pop();
-    if (!messages || !userMessage || userMessage.role !== "user") {
+    if (!messages || !userMessage || userMessage.role !== 'user') {
       return NextResponse.json(
         {
-          error:
-            "messages are required in the request body and the last message must be from the user",
+          error: 'messages are required in the request body and the last message must be from the user',
         },
         { status: 400 },
       );
@@ -59,10 +46,7 @@ export async function POST(request: NextRequest) {
     const chatEngine = await createChatEngine();
 
     // Convert message content from Vercel/AI format to LlamaIndex/OpenAI format
-    const userMessageContent = convertMessageContent(
-      userMessage.content,
-      data?.imageUrl,
-    );
+    const userMessageContent = convertMessageContent(userMessage.content, data?.imageUrl);
 
     // Init Vercel AI StreamData
     const vercelStreamData = new StreamData();
@@ -89,7 +73,7 @@ export async function POST(request: NextRequest) {
     // Return a StreamingTextResponse, which can be consumed by the Vercel/AI client
     return new StreamingTextResponse(stream, {}, vercelStreamData);
   } catch (error) {
-    console.error("[LlamaIndex]", error);
+    console.error('[LlamaIndex]', error);
     return NextResponse.json(
       {
         detail: (error as Error).message,
