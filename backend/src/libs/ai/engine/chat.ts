@@ -1,5 +1,9 @@
-import { ContextChatEngine, Settings } from "llamaindex";
-import { getDataSource } from "./index";
+import { ContextChatEngine, LLM, OpenAI, Settings } from 'llamaindex';
+import { getDataSource } from './index';
+
+type ChatEngineSettings = {
+  chatModel: LLM;
+};
 
 export async function createChatEngine() {
   const index = await getDataSource();
@@ -13,7 +17,10 @@ export async function createChatEngine() {
   });
 
   return new ContextChatEngine({
-    chatModel: Settings.llm,
+    chatModel: new OpenAI({
+      model: 'gpt-3.5-turbo',
+      maxTokens: 1024,
+    }),
     retriever,
   });
 }

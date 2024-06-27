@@ -1,14 +1,9 @@
-import { VectorStoreIndex } from "llamaindex";
-import { storageContextFromDefaults } from "llamaindex/storage/StorageContext";
+import { VectorStoreIndex } from 'llamaindex';
+import { storageContextFromDefaults } from 'llamaindex/storage/StorageContext';
 
-import * as dotenv from "dotenv";
-
-import { getDocuments } from "./loader";
-import { initSettings } from "./settings";
-import { STORAGE_CACHE_DIR } from "./shared";
-
-// Load environment variables from local .env file
-dotenv.config();
+import { getDocuments } from './loader';
+import { initSettings } from './settings';
+import { STORAGE_CACHE_DIR } from './shared';
 
 async function getRuntime(func: any) {
   const start = Date.now();
@@ -35,5 +30,5 @@ async function generateDatasource() {
 (async () => {
   initSettings();
   await generateDatasource();
-  console.log("Finished generating storage.");
+  console.log('Finished generating storage.');
 })();
