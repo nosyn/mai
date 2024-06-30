@@ -4,17 +4,17 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Icons } from '../icons';
 import { APP_ROUTE } from '@/lib/const';
+import { Bot } from '@/lib/database/schema';
 
 type BotCardProps = {
-  title: string;
-  description: string;
+  bot: Bot;
 };
-export function BotCard({ title, description }: BotCardProps) {
+export function BotCard({ bot }: BotCardProps) {
   return (
     <Card>
       <CardHeader className="p-4">
-        <CardTitle>{title}</CardTitle>
-        <CardDescription>{description}</CardDescription>
+        <CardTitle>{bot.name}</CardTitle>
+        <CardDescription>{bot.description}</CardDescription>
       </CardHeader>
       <CardContent className="grid px-4 pb-2">
         <div className="flex items-center gap-4">
@@ -29,9 +29,11 @@ export function BotCard({ title, description }: BotCardProps) {
         </div>
       </CardContent>
       <CardFooter className="flex justify-end px-2">
-        <Button variant="outline" size="sm">
-          <Icons.settings className="w-4 h-4 mr-2" />
-          Manage
+        <Button variant="outline" size="sm" asChild>
+          <Link href={`${APP_ROUTE.BOTS.INDEX}/${bot.id}`}>
+            <Icons.settings className="w-4 h-4 mr-2" />
+            Manage
+          </Link>
         </Button>
       </CardFooter>
     </Card>

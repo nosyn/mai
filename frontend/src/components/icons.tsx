@@ -27,11 +27,13 @@ import {
   Trash,
   Twitter,
   X,
+  FrownIcon,
 } from 'lucide-react';
 
 export type Icon = LucideIcon;
 
 export const Icons = {
+  notFound: FrownIcon,
   playground: TerminalSquare,
   bot: Bot,
   logo: Command,

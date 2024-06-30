@@ -1,11 +1,8 @@
-import {
-  CreateDataSource,
-  DataSource,
-} from "@/components/data-sources/data-source";
-import client from "@/lib/client";
+import { CreateDataSource, DataSource } from '@/components/data-sources/data-source';
+import { getDataSourcesAction } from '@/lib/actions/data-sources';
 
 export default async function DataSourcesPage() {
-  const { dataSources } = await client.getDataSources();
+  const { dataSources } = await getDataSourcesAction();
 
   return (
     <main className="p-4">
