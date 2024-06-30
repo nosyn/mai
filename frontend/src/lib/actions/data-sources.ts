@@ -6,7 +6,8 @@ import { redirect } from 'next/navigation';
 import { APP_ROUTE } from '../const';
 import { DataSourcesTable, insertDataSourceSchema } from '../database/schema';
 import { db } from '../database';
-import { v4 as uuidV4 } from 'uuid';
+import { v4 as uuidV4, validate } from 'uuid';
+import { eq } from 'drizzle-orm';
 
 export type CreateDataSource = {
   name: string;
@@ -44,4 +45,18 @@ export const getDataSourcesAction = async () => {
   return {
     dataSources,
   };
+};
+
+export const fetchDataSourceAction = async (id: string) => {
+  const isValidUUID = validate(id);
+
+  if (!isValidUUID) {
+    return null;
+  }
+
+  const bot = await db.query.DataSourcesTable.findFirst({
+    where: eq(DataSourcesTable.id, id),
+  });
+
+  return bot;
 };
