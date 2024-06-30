@@ -1,11 +1,11 @@
-import "dotenv/config";
-import { POSTGRESQL_CONFIGS } from "@/configs";
-import { defineConfig } from "drizzle-kit";
+import 'dotenv/config';
+import { POSTGRESQL_CONFIGS } from '@/lib/configs';
+import { defineConfig } from 'drizzle-kit';
 
 export default defineConfig({
-  dialect: "postgresql",
-  schema: "./src/lib/database/schema/*.ts",
-  out: "./drizzle",
+  dialect: 'postgresql',
+  schema: './src/lib/database/schema/*.ts',
+  out: './drizzle',
   dbCredentials: {
     user: POSTGRESQL_CONFIGS.USERNAME,
     password: POSTGRESQL_CONFIGS.PASSWORD,

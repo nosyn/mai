@@ -1,13 +1,11 @@
-'use client';
-
 import { Input } from '@/components/ui/input';
-import { createDataSourceAction } from '@/lib/actions/data-sources';
+import { createBotFormAction } from '@/lib/actions/bots';
 import { Button } from '../ui/button';
 import { Label } from '../ui/label';
 
-export const CreateDataSourceForm = () => {
+export const CreateBotForm = () => {
   return (
-    <form action={createDataSourceAction} className="space-y-2">
+    <form action={createBotFormAction} className="space-y-2">
       <div className="grid w-full max-w-sm items-center gap-2">
         <Label htmlFor="name">Name</Label>
         <Input type="text" id="name" name="name" placeholder="Name" />
