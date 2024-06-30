@@ -6,11 +6,13 @@ networks:
 
 services:
   postgresql:
-    image: "bitnami/postgresql:16.3.0"
+    image: 'bitnami/postgresql:16.3.0'
     networks:
       - database
     ports:
       - 5432:5432
+    volumes:
+      - ./volumes/postgresql-persistence:/bitnami/postgresql
     environment:
       - POSTGRESQL_DATABASE=mai-db
       - POSTGRESQL_USERNAME=db_user
@@ -22,3 +24,30 @@ services:
       - 6334:6334
     volumes:
       - ./volumes/qdrant_storage:/qdrant/storage:rw
+  traefik:
+    image: 'traefik:v2.11'
+    container_name: 'traefik'
+    restart: 'always'
+    command:
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      - --providers.docker
+      - --api
+
+      ## !DEBUG: Uncomment the line below to debug
+      - --api.insecure=true
+    labels:
+      # global redirect to https
+      - 'traefik.http.routers.http-catchall.rule=hostregexp(`{host:.+}`)'
+      - 'traefik.http.routers.http-catchall.entrypoints=web'
+      - 'traefik.http.routers.http-catchall.middlewares=redirect-to-https'
+      # middleware redirect
+      - 'traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https'
+    ports:
+      - '443:443'
+      - '80:80'
+
+      ## !DEBUG: Uncomment the line below to debug - The Web UI (enabled by --api.insecure=true)
+      - '8080:8080'
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock:ro'

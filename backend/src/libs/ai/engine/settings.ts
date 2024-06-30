@@ -1,5 +1,4 @@
 import {
-  Anthropic,
   GEMINI_EMBEDDING_MODEL,
   GEMINI_MODEL,
   Gemini,
@@ -45,9 +44,7 @@ function initOpenAI() {
   });
   Settings.embedModel = new OpenAIEmbedding({
     model: process.env.EMBEDDING_MODEL,
-    dimensions: process.env.EMBEDDING_DIM
-      ? parseInt(process.env.EMBEDDING_DIM)
-      : undefined,
+    dimensions: process.env.EMBEDDING_DIM ? parseInt(process.env.EMBEDDING_DIM) : undefined,
   });
 }
 
