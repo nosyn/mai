@@ -1,26 +1,12 @@
 {
   "version": "7",
-  "dialect": "postgresql",
+  "dialect": "sqlite",
   "entries": [
     {
       "idx": 0,
-      "version": "7",
-      "when": 1718516477312,
-      "tag": "0000_classy_james_howlett",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1719642144525,
-      "tag": "0001_sad_living_lightning",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1719727201103,
-      "tag": "0002_swift_ogun",
+      "version": "6",
+      "when": 1720718254841,
+      "tag": "0000_smooth_centennial",
       "breakpoints": true
     }
   ]
