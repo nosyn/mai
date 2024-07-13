@@ -6,10 +6,13 @@ export default function webpack(config) {
 
   // Following lines will fix issues with onnxruntime-node when using pnpm
   // See: https://github.com/vercel/next.js/issues/43433
-  config.externals.push({
-    "onnxruntime-node": "commonjs onnxruntime-node",
-    sharp: "commonjs sharp",
-  });
+  config.externals.push(
+    {
+      'onnxruntime-node': 'commonjs onnxruntime-node',
+      sharp: 'commonjs sharp',
+    },
+    'bun:sqlite',
+  );
 
   return config;
 }

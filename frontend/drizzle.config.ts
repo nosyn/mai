@@ -7,7 +7,7 @@ export default defineConfig({
   schema: './src/lib/database/schema/*.ts',
   out: './drizzle',
   dbCredentials: {
-    url: `file:${SQLITE_CONFIGS.URL}`,
+    url: SQLITE_CONFIGS.URL,
   },
   verbose: true,
 });
