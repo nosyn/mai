@@ -7,16 +7,6 @@ import {
   ToolOutput,
 } from "llamaindex";
 
-export function appendImageData(data: StreamData, imageUrl?: string) {
-  if (!imageUrl) return;
-  data.appendMessageAnnotation({
-    type: "image",
-    data: {
-      url: imageUrl,
-    },
-  });
-}
-
 export function appendSourceData(
   data: StreamData,
   sourceNodes?: NodeWithScore<Metadata>[],
@@ -29,6 +19,7 @@ export function appendSourceData(
         ...node.node.toMutableJSON(),
         id: node.node.id_,
         score: node.score ?? null,
+        url: getNodeUrl(node.node.metadata),
       })),
     },
   });
@@ -65,11 +56,21 @@ export function appendToolData(
   });
 }
 
+export function createStreamTimeout(stream: StreamData) {
+  const timeout = Number(process.env.STREAM_TIMEOUT ?? 1000 * 60 * 5); // default to 5 minutes
+  const t = setTimeout(() => {
+    appendEventData(stream, `Stream timed out after ${timeout / 1000} seconds`);
+    stream.close();
+  }, timeout);
+  return t;
+}
+
 export function createCallbackManager(stream: StreamData) {
   const callbackManager = new CallbackManager();
 
-  callbackManager.on("retrieve", (data) => {
-    const { nodes, query } = data.detail;
+  callbackManager.on("retrieve-end", (data) => {
+    const { nodes, query } = data.detail.payload;
+    appendSourceData(stream, nodes);
     appendEventData(stream, `Retrieving context for query: '${query}'`);
     appendEventData(
       stream,
@@ -94,4 +95,21 @@ export function createCallbackManager(stream: StreamData) {
   });
 
   return callbackManager;
+}
+
+function getNodeUrl(metadata: Metadata) {
+  const url = metadata["URL"];
+  if (url) return url;
+  const fileName = metadata["file_name"];
+  if (!process.env.FILESERVER_URL_PREFIX) {
+    console.warn(
+      "FILESERVER_URL_PREFIX is not set. File URLs will not be generated.",
+    );
+    return undefined;
+  }
+  if (fileName) {
+    const folder = metadata["private"] ? "output/uploaded" : "data";
+    return `${process.env.FILESERVER_URL_PREFIX}/${folder}/${fileName}`;
+  }
+  return undefined;
 }

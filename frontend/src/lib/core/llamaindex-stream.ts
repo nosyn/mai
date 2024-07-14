@@ -8,7 +8,7 @@ import {
 import { Metadata, NodeWithScore, Response, ToolCallLLMMessageOptions } from 'llamaindex';
 
 import { AgentStreamChatResponse } from 'llamaindex/agent/base';
-import { appendImageData, appendSourceData } from './stream-helper';
+import { appendImageData, appendSourceData } from '../../app/api/chat/stream-helper';
 
 type LlamaIndexResponse = AgentStreamChatResponse<ToolCallLLMMessageOptions> | Response;
 

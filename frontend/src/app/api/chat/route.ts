@@ -1,11 +1,12 @@
 import { initObservability } from '@/lib/observability';
-import { ChatRequestOptions, Message, StreamData, StreamingTextResponse } from 'ai';
-import { ChatMessage, MessageContent, Settings } from 'llamaindex';
+import { JSONValue, Message, StreamData, StreamingTextResponse } from 'ai';
+import { ChatMessage, Settings } from 'llamaindex';
 import { NextRequest, NextResponse } from 'next/server';
-import { createChatEngine } from '@/lib/core/engine/chat';
-import { initSettings } from '@/lib/core/engine/settings';
-import { LlamaIndexStream } from '@/lib/core/llamaindex-stream';
-import { createCallbackManager } from '@/lib/core/stream-helper';
+import { createChatEngine } from './engine/chat';
+import { initSettings } from './engine/settings';
+import { convertMessageContent, retrieveDocumentIds } from './llamaindex/streaming/annotations';
+import { createCallbackManager, createStreamTimeout } from './llamaindex/streaming/events';
+import { LlamaIndexStream } from './llamaindex/streaming/stream';
 
 initObservability();
 initSettings();
@@ -13,26 +14,14 @@ initSettings();
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-const convertMessageContent = (textMessage: string, imageUrl: string | undefined): MessageContent => {
-  if (!imageUrl) return textMessage;
-  return [
-    {
-      type: 'text',
-      text: textMessage,
-    },
-    {
-      type: 'image_url',
-      image_url: {
-        url: imageUrl,
-      },
-    },
-  ];
-};
-
 export async function POST(request: NextRequest) {
+  // Init Vercel AI StreamData and timeout
+  const vercelStreamData = new StreamData();
+  const streamTimeout = createStreamTimeout(vercelStreamData);
+
   try {
     const body = await request.json();
-    const { messages, data, ...rest }: { messages: Message[]; data: ChatRequestOptions['data'] } = body;
+    const { messages }: { messages: Message[] } = body;
     const userMessage = messages.pop();
     if (!messages || !userMessage || userMessage.role !== 'user') {
       return NextResponse.json(
@@ -43,13 +32,26 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const chatEngine = await createChatEngine();
+    let annotations = userMessage.annotations;
+    if (!annotations) {
+      // the user didn't send any new annotations with the last message
+      // so use the annotations from the last user message that has annotations
+      // REASON: GPT4 doesn't consider MessageContentDetail from previous messages, only strings
+      annotations = messages
+        .slice()
+        .reverse()
+        .find((message) => message.role === 'user' && message.annotations)?.annotations;
+    }
+
+    // retrieve document Ids from the annotations of all messages (if any) and create chat engine with index
+    const allAnnotations: JSONValue[] = [...messages, userMessage].flatMap((message) => {
+      return message.annotations ?? [];
+    });
+    const ids = retrieveDocumentIds(allAnnotations);
+    const chatEngine = await createChatEngine(ids);
 
     // Convert message content from Vercel/AI format to LlamaIndex/OpenAI format
-    const userMessageContent = convertMessageContent(userMessage.content, data?.imageUrl);
-
-    // Init Vercel AI StreamData
-    const vercelStreamData = new StreamData();
+    const userMessageContent = convertMessageContent(userMessage.content, annotations);
 
     // Setup callbacks
     const callbackManager = createCallbackManager(vercelStreamData);
@@ -64,11 +66,7 @@ export async function POST(request: NextRequest) {
     });
 
     // Transform LlamaIndex stream to Vercel/AI format
-    const stream = LlamaIndexStream(response, vercelStreamData, {
-      parserOptions: {
-        image_url: data?.imageUrl,
-      },
-    });
+    const stream = LlamaIndexStream(response, vercelStreamData);
 
     // Return a StreamingTextResponse, which can be consumed by the Vercel/AI client
     return new StreamingTextResponse(stream, {}, vercelStreamData);
@@ -82,5 +80,7 @@ export async function POST(request: NextRequest) {
         status: 500,
       },
     );
+  } finally {
+    clearTimeout(streamTimeout);
   }
 }
