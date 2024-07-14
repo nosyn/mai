@@ -1,16 +1,17 @@
-import { pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core';
-import { InferSelectModel, InferInsertModel } from 'drizzle-orm';
+import { sqliteTable, text } from 'drizzle-orm/sqlite-core';
+import { InferSelectModel, InferInsertModel, sql } from 'drizzle-orm';
 import { createInsertSchema } from 'drizzle-zod';
 
-export const BotsTable = pgTable('bots', {
-  id: uuid('id').primaryKey(),
+export const BotsTable = sqliteTable('bots', {
+  id: text('id').primaryKey(),
   name: text('name').notNull(),
   description: text('description').notNull(),
-  createdAt: timestamp('created_at', { mode: 'date', precision: 3 }).defaultNow().notNull(),
-  updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 })
-    .defaultNow()
+  createdAt: text('created_at')
+    .default(sql`(CURRENT_DATE)`)
+    .notNull(),
+  updatedAt: text('updated_at')
     .notNull()
-    .$onUpdate(() => new Date()),
+    .$onUpdate(() => sql`(CURRENT_DATE)`),
 });
 
 export type Bot = InferSelectModel<typeof BotsTable>;

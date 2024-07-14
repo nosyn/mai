@@ -1,11 +1,8 @@
-import { checkEnvConfigs } from "./utils";
+import { checkEnvConfigs } from './utils';
 
-export const POSTGRESQL_CONFIGS = {
-  USERNAME: process.env.POSTGRESQL_USERNAME ?? "",
-  PASSWORD: process.env.POSTGRESQL_PASSWORD ?? "",
-  HOST: process.env.POSTGRESQL_HOST ?? "",
-  PORT: process.env.POSTGRESQL_PORT ?? "",
-  DATABASE: process.env.POSTGRESQL_DATABASE ?? "",
+// SQLite
+export const SQLITE_CONFIGS = {
+  URL: process.env.SQLITE_URL ?? './db/mai.db',
 };
 
-checkEnvConfigs([POSTGRESQL_CONFIGS]);
+checkEnvConfigs([SQLITE_CONFIGS]);

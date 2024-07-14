@@ -4,30 +4,19 @@ import {
   createStreamDataTransformer,
   trimStartOfStreamHelper,
   type AIStreamCallbacksAndOptions,
-} from "ai";
-import {
-  Metadata,
-  NodeWithScore,
-  Response,
-  ToolCallLLMMessageOptions,
-} from "llamaindex";
+} from 'ai';
+import { Metadata, NodeWithScore, Response, ToolCallLLMMessageOptions } from 'llamaindex';
 
-import { AgentStreamChatResponse } from "llamaindex/agent/base";
-import { appendImageData, appendSourceData } from "./stream-helper";
+import { AgentStreamChatResponse } from 'llamaindex/agent/base';
+import { appendImageData, appendSourceData } from './stream-helper';
 
-type LlamaIndexResponse =
-  | AgentStreamChatResponse<ToolCallLLMMessageOptions>
-  | Response;
+type LlamaIndexResponse = AgentStreamChatResponse<ToolCallLLMMessageOptions> | Response;
 
 type ParserOptions = {
   image_url?: string;
 };
 
-function createParser(
-  res: AsyncIterable<LlamaIndexResponse>,
-  data: StreamData,
-  opts?: ParserOptions,
-) {
+function createParser(res: AsyncIterable<LlamaIndexResponse>, data: StreamData, opts?: ParserOptions) {
   const it = res[Symbol.asyncIterator]();
   const trimStartOfStream = trimStartOfStreamHelper();
 
@@ -54,12 +43,12 @@ function createParser(
           // get source nodes from the first response
           sourceNodes = value.sourceNodes;
         }
-        delta = value.response ?? "";
+        delta = value.response ?? '';
       } else {
         // handle other types
         delta = value.response.delta;
       }
-      const text = trimStartOfStream(delta ?? "");
+      const text = trimStartOfStream(delta ?? '');
       if (text) {
         controller.enqueue(text);
       }

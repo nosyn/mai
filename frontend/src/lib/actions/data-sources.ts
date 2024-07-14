@@ -23,20 +23,16 @@ export async function createDataSourceAction(formData: FormData) {
     ...ds,
   });
 
-  try {
-    await client.createCollection(ds.name, {
-      vectors: {
-        size: 4,
-        distance: 'Cosine',
-      },
-    });
-    console.log('Created collection name: ' + ds.name);
+  await client.createCollection(ds.name, {
+    vectors: {
+      size: 4,
+      distance: 'Cosine',
+    },
+  });
+  console.log('Created collection name: ' + ds.name);
 
-    revalidatePath(APP_ROUTE.DATA_SOURCES.INDEX);
-    redirect(APP_ROUTE.DATA_SOURCES.INDEX);
-  } catch (error) {
-    throw error;
-  }
+  revalidatePath(APP_ROUTE.DATA_SOURCES.INDEX);
+  redirect(APP_ROUTE.DATA_SOURCES.INDEX);
 }
 
 export const getDataSourcesAction = async () => {
@@ -54,9 +50,15 @@ export const fetchDataSourceAction = async (id: string) => {
     return null;
   }
 
-  const bot = await db.query.DataSourcesTable.findFirst({
+  const ds = await db.query.DataSourcesTable.findFirst({
     where: eq(DataSourcesTable.id, id),
   });
 
-  return bot;
+  if (!ds) {
+    throw new Error(`Couldn't find data source in the database`);
+  }
+
+  const collection = await client.getCollection(ds.name);
+
+  return { ...ds, ...collection };
 };
