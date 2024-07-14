@@ -31,7 +31,6 @@ export default function ChatInput({ handleSubmit, handleInputChange, input, isLo
           llmConfig: {
             model: (document.querySelector('#model') as HTMLInputElement)?.value || -1,
             topP: (document.querySelector('#top-p') as HTMLInputElement)?.value || -1,
-            topK: (document.querySelector('#top-k') as HTMLInputElement)?.value || -1,
             temperature: (document.querySelector('#temperature') as HTMLInputElement)?.value || -1,
           },
         },

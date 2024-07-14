@@ -2,10 +2,10 @@ import { initObservability } from '@/lib/observability';
 import { ChatRequestOptions, Message, StreamData, StreamingTextResponse } from 'ai';
 import { ChatMessage, MessageContent, Settings } from 'llamaindex';
 import { NextRequest, NextResponse } from 'next/server';
-import { createChatEngine } from './engine/chat';
-import { initSettings } from './engine/settings';
-import { LlamaIndexStream } from './llamaindex-stream';
-import { createCallbackManager } from './stream-helper';
+import { createChatEngine } from '@/lib/core/engine/chat';
+import { initSettings } from '@/lib/core/engine/settings';
+import { LlamaIndexStream } from '@/lib/core/llamaindex-stream';
+import { createCallbackManager } from '@/lib/core/stream-helper';
 
 initObservability();
 initSettings();
