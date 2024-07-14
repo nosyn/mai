@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/select';
 import { getAvailableModels } from '@/lib/actions/llm';
 import type { ALL_AVAILABLE_OPENAI_MODELS } from 'llamaindex';
-import { Icons } from '../icons';
+import { Icons } from '../ui/icons';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { Textarea } from '../ui/textarea';

@@ -1,8 +1,8 @@
 'use client';
 
 import { useChat } from 'ai/react';
-import { ChatInput, ChatMessages } from './ui/chat';
-import { useClientConfig } from './ui/chat/hooks/use-config';
+import { ChatInput, ChatMessages } from '@/components/chat';
+import { useClientConfig } from '@/components/chat/hooks/use-config';
 import { Badge } from './ui/badge';
 
 export default function ChatSection() {

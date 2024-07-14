@@ -1,11 +1,10 @@
-import { XCircleIcon } from "lucide-react";
-import Image from "next/image";
-import DocxIcon from "../ui/icons/docx.svg";
-import PdfIcon from "../ui/icons/pdf.svg";
-import SheetIcon from "../ui/icons/sheet.svg";
-import TxtIcon from "../ui/icons/txt.svg";
-import { Button } from "./button";
-import { DocumentFile, DocumentFileType } from "./chat";
+import { XCircleIcon } from 'lucide-react';
+import Image from 'next/image';
+import DocxIcon from '../ui/icons/docx.svg';
+import PdfIcon from '../ui/icons/pdf.svg';
+import SheetIcon from '../ui/icons/sheet.svg';
+import TxtIcon from '../ui/icons/txt.svg';
+import { Button } from '../ui/button';
 import {
   Drawer,
   DrawerClose,
@@ -14,8 +13,9 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from "./drawer";
-import { cn } from "./lib/utils";
+} from '../ui/drawer';
+import { cn } from '@/components/lib/utils';
+import { DocumentFile, DocumentFileType } from '.';
 
 export interface DocumentPreviewProps {
   file: DocumentFile;
@@ -25,9 +25,9 @@ export interface DocumentPreviewProps {
 export function DocumentPreview(props: DocumentPreviewProps) {
   const { filename, filesize, content, filetype } = props.file;
 
-  if (content.type === "ref") {
+  if (content.type === 'ref') {
     return (
-      <div title={`Document IDs: ${(content.value as string[]).join(", ")}`}>
+      <div title={`Document IDs: ${(content.value as string[]).join(', ')}`}>
         <PreviewCard {...props} />
       </div>
     );
@@ -53,10 +53,8 @@ export function DocumentPreview(props: DocumentPreviewProps) {
           </DrawerClose>
         </DrawerHeader>
         <div className="m-4 max-h-[80%] overflow-auto">
-          {content.type === "text" && (
-            <pre className="bg-secondary rounded-md p-4 block text-sm">
-              {content.value as string}
-            </pre>
+          {content.type === 'text' && (
+            <pre className="bg-secondary rounded-md p-4 block text-sm">{content.value as string}</pre>
           )}
         </div>
       </DrawerContent>
@@ -76,18 +74,13 @@ function PreviewCard(props: DocumentPreviewProps) {
   return (
     <div
       className={cn(
-        "p-2 w-60 max-w-60 bg-secondary rounded-lg text-sm relative",
-        file.content.type === "ref" ? "" : "cursor-pointer",
+        'p-2 w-60 max-w-60 bg-secondary rounded-lg text-sm relative',
+        file.content.type === 'ref' ? '' : 'cursor-pointer',
       )}
     >
       <div className="flex flex-row items-center gap-2">
         <div className="relative h-8 w-8 shrink-0 overflow-hidden rounded-md">
-          <Image
-            className="h-full w-auto"
-            priority
-            src={FileIcon[file.filetype]}
-            alt="Icon"
-          />
+          <Image className="h-full w-auto" priority src={FileIcon[file.filetype]} alt="Icon" />
         </div>
         <div className="overflow-hidden">
           <div className="truncate font-semibold">
@@ -99,15 +92,8 @@ function PreviewCard(props: DocumentPreviewProps) {
         </div>
       </div>
       {onRemove && (
-        <div
-          className={cn(
-            "absolute -top-2 -right-2 w-6 h-6 z-10 bg-gray-500 text-white rounded-full",
-          )}
-        >
-          <XCircleIcon
-            className="w-6 h-6 bg-gray-500 text-white rounded-full"
-            onClick={onRemove}
-          />
+        <div className={cn('absolute -top-2 -right-2 w-6 h-6 z-10 bg-gray-500 text-white rounded-full')}>
+          <XCircleIcon className="w-6 h-6 bg-gray-500 text-white rounded-full" onClick={onRemove} />
         </div>
       )}
     </div>

@@ -1,5 +1,5 @@
 import { PDFViewer, PdfFocusProvider } from "@llamaindex/pdf-viewer";
-import { Button } from "../../ui/button";
+import { Button } from "../../button";
 import {
   Drawer,
   DrawerClose,
@@ -8,11 +8,10 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from "../../ui/drawer";
+} from "../../drawer";
 
 export interface PdfDialogProps {
   documentId: string;
-  path: string;
   url: string;
   trigger: React.ReactNode;
 }
@@ -26,13 +25,13 @@ export default function PdfDialog(props: PdfDialogProps) {
           <div className="space-y-2">
             <DrawerTitle>PDF Content</DrawerTitle>
             <DrawerDescription>
-              File path:{" "}
+              File URL:{" "}
               <a
                 className="hover:text-blue-900"
                 href={props.url}
                 target="_blank"
               >
-                {props.path}
+                {props.url}
               </a>
             </DrawerDescription>
           </div>

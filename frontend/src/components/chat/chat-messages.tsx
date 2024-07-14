@@ -1,28 +1,29 @@
-import { Loader2 } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { Loader2 } from 'lucide-react';
+import { useEffect, useRef } from 'react';
 
-import ChatActions from "./chat-actions";
-import ChatMessage from "./chat-message";
-import { UseChatHelpers } from "ai/react";
+import { Button } from '../button';
+import ChatActions from './chat-actions';
+import ChatMessage from './chat-message';
+import { ChatHandler } from './chat.interface';
+import { useClientConfig } from './hooks/use-config';
 
 export default function ChatMessages(
-  props: Pick<UseChatHelpers, "messages" | "isLoading" | "reload" | "stop">,
+  props: Pick<ChatHandler, 'messages' | 'isLoading' | 'reload' | 'stop' | 'append'>,
 ) {
+  const { starterQuestions } = useClientConfig();
   const scrollableChatContainerRef = useRef<HTMLDivElement>(null);
   const messageLength = props.messages.length;
   const lastMessage = props.messages[messageLength - 1];
 
   const scrollToBottom = () => {
     if (scrollableChatContainerRef.current) {
-      scrollableChatContainerRef.current.scrollTop =
-        scrollableChatContainerRef.current.scrollHeight;
+      scrollableChatContainerRef.current.scrollTop = scrollableChatContainerRef.current.scrollHeight;
     }
   };
 
-  const isLastMessageFromAssistant =
-    messageLength > 0 && lastMessage?.role !== "user";
-  const showReload = !props.isLoading && isLastMessageFromAssistant;
-  const showStop = props.isLoading;
+  const isLastMessageFromAssistant = messageLength > 0 && lastMessage?.role !== 'user';
+  const showReload = props.reload && !props.isLoading && isLastMessageFromAssistant;
+  const showStop = props.stop && props.isLoading;
 
   // `isPending` indicate
   // that stream response is not yet received from the server,
@@ -35,19 +36,10 @@ export default function ChatMessages(
 
   return (
     <div className="flex-1">
-      <div
-        className="flex flex-col gap-5 divide-y overflow-y-auto pb-4"
-        ref={scrollableChatContainerRef}
-      >
+      <div className="flex flex-col gap-5 divide-y overflow-y-auto pb-4" ref={scrollableChatContainerRef}>
         {props.messages.map((m, i) => {
           const isLoadingMessage = i === messageLength - 1 && props.isLoading;
-          return (
-            <ChatMessage
-              key={m.id}
-              chatMessage={m}
-              isLoading={isLoadingMessage}
-            />
-          );
+          return <ChatMessage key={m.id} chatMessage={m} isLoading={isLoadingMessage} />;
         })}
         {isPending && (
           <div className="flex justify-center items-center pt-10">
@@ -55,14 +47,22 @@ export default function ChatMessages(
           </div>
         )}
       </div>
-      <div className="flex justify-end py-4">
-        <ChatActions
-          reload={props.reload}
-          stop={props.stop}
-          showReload={showReload}
-          showStop={showStop}
-        />
-      </div>
+      {(showReload || showStop) && (
+        <div className="flex justify-end py-4">
+          <ChatActions reload={props.reload} stop={props.stop} showReload={showReload} showStop={showStop} />
+        </div>
+      )}
+      {!messageLength && starterQuestions?.length && props.append && (
+        <div className="absolute bottom-6 left-0 w-full">
+          <div className="grid grid-cols-2 gap-2 mx-20">
+            {starterQuestions.map((question, i) => (
+              <Button variant="outline" key={i} onClick={() => props.append!({ role: 'user', content: question })}>
+                {question}
+              </Button>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
