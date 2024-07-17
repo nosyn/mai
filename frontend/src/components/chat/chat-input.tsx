@@ -1,52 +1,41 @@
-import { JSONValue } from "ai";
-import { Button } from "../button";
-import { DocumentPreview } from "../document-preview";
-import FileUploader from "../file-uploader";
-import { Input } from "../input";
-import UploadImagePreview from "../upload-image-preview";
-import { ChatHandler } from "./chat.interface";
-import { useFile } from "./hooks/use-file";
+import { JSONValue } from 'ai';
+import { Button } from '../ui/button';
+import { DocumentPreview } from './document-preview';
+import FileUploader from './file-uploader';
+import { Input } from '../ui/input';
+import UploadImagePreview from './upload-image-preview';
+import { ChatHandler } from './chat.interface';
+import { useFile } from './hooks/use-file';
 
-const ALLOWED_EXTENSIONS = ["png", "jpg", "jpeg", "csv", "pdf", "txt", "docx"];
+const ALLOWED_EXTENSIONS = ['png', 'jpg', 'jpeg', 'csv', 'pdf', 'txt', 'docx'];
 
 export default function ChatInput(
   props: Pick<
     ChatHandler,
-    | "isLoading"
-    | "input"
-    | "onFileUpload"
-    | "onFileError"
-    | "handleSubmit"
-    | "handleInputChange"
-    | "messages"
-    | "setInput"
-    | "append"
+    | 'isLoading'
+    | 'input'
+    | 'onFileUpload'
+    | 'onFileError'
+    | 'handleSubmit'
+    | 'handleInputChange'
+    | 'messages'
+    | 'setInput'
+    | 'append'
   >,
 ) {
-  const {
-    imageUrl,
-    setImageUrl,
-    uploadFile,
-    files,
-    removeDoc,
-    reset,
-    getAnnotations,
-  } = useFile();
+  const { imageUrl, setImageUrl, uploadFile, files, removeDoc, reset, getAnnotations } = useFile();
 
   // default submit function does not handle including annotations in the message
   // so we need to use append function to submit new message with annotations
-  const handleSubmitWithAnnotations = (
-    e: React.FormEvent<HTMLFormElement>,
-    annotations: JSONValue[] | undefined,
-  ) => {
+  const handleSubmitWithAnnotations = (e: React.FormEvent<HTMLFormElement>, annotations: JSONValue[] | undefined) => {
     e.preventDefault();
     props.append!({
       content: props.input,
-      role: "user",
+      role: 'user',
       createdAt: new Date(),
       annotations,
     });
-    props.setInput!("");
+    props.setInput!('');
   };
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -60,7 +49,7 @@ export default function ChatInput(
 
   const handleUploadFile = async (file: File) => {
     if (imageUrl || files.length > 0) {
-      alert("You can only upload one file at a time.");
+      alert('You can only upload one file at a time.');
       return;
     }
     try {
@@ -72,21 +61,12 @@ export default function ChatInput(
   };
 
   return (
-    <form
-      onSubmit={onSubmit}
-      className="rounded-xl bg-white p-4 shadow-xl space-y-4 shrink-0"
-    >
-      {imageUrl && (
-        <UploadImagePreview url={imageUrl} onRemove={() => setImageUrl(null)} />
-      )}
+    <form onSubmit={onSubmit} className="rounded-xl bg-white p-4 shadow-xl space-y-4 shrink-0">
+      {imageUrl && <UploadImagePreview url={imageUrl} onRemove={() => setImageUrl(null)} />}
       {files.length > 0 && (
         <div className="flex gap-4 w-full overflow-auto py-2">
           {files.map((file) => (
-            <DocumentPreview
-              key={file.id}
-              file={file}
-              onRemove={() => removeDoc(file)}
-            />
+            <DocumentPreview key={file.id} file={file} onRemove={() => removeDoc(file)} />
           ))}
         </div>
       )}

@@ -1,5 +1,5 @@
 import { signOut } from '@/auth';
-import { Icons } from './ui/icons';
+import { Icons } from '@/components/icons';
 import { Button } from './ui/button';
 import {
   DropdownMenu,

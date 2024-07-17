@@ -1,10 +1,6 @@
-import { XCircleIcon } from 'lucide-react';
-import Image from 'next/image';
-import DocxIcon from '../ui/icons/docx.svg';
-import PdfIcon from '../ui/icons/pdf.svg';
-import SheetIcon from '../ui/icons/sheet.svg';
-import TxtIcon from '../ui/icons/txt.svg';
-import { Button } from '../ui/button';
+import { Icons } from '@/components/icons';
+import { cn } from '@/components/lib/utils';
+import { Button } from '@/components/ui/button';
 import {
   Drawer,
   DrawerClose,
@@ -13,9 +9,9 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from '../ui/drawer';
-import { cn } from '@/components/lib/utils';
-import { DocumentFile, DocumentFileType } from '.';
+} from '@/components/ui/drawer';
+import { XCircleIcon } from 'lucide-react';
+import { DocumentFile } from '.';
 
 export interface DocumentPreviewProps {
   file: DocumentFile;
@@ -62,15 +58,16 @@ export function DocumentPreview(props: DocumentPreviewProps) {
   );
 }
 
-const FileIcon: Record<DocumentFileType, string> = {
-  csv: SheetIcon,
-  pdf: PdfIcon,
-  docx: DocxIcon,
-  txt: TxtIcon,
+const FileIcon = {
+  csv: Icons.sheet,
+  pdf: Icons.pdf,
+  docx: Icons.docx,
+  txt: Icons.txt,
 };
 
 function PreviewCard(props: DocumentPreviewProps) {
   const { onRemove, file } = props;
+  const Icon = FileIcon[file.filetype];
   return (
     <div
       className={cn(
@@ -80,7 +77,7 @@ function PreviewCard(props: DocumentPreviewProps) {
     >
       <div className="flex flex-row items-center gap-2">
         <div className="relative h-8 w-8 shrink-0 overflow-hidden rounded-md">
-          <Image className="h-full w-auto" priority src={FileIcon[file.filetype]} alt="Icon" />
+          <Icon className="h-full w-auto" />
         </div>
         <div className="overflow-hidden">
           <div className="truncate font-semibold">

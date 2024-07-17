@@ -1,5 +1,5 @@
-import { DocumentPreview } from "../../document-preview";
-import { DocumentFileData } from "../index";
+import { DocumentPreview } from '../document-preview';
+import { DocumentFileData } from '../index';
 
 export function ChatFiles({ data }: { data: DocumentFileData }) {
   if (!data.files.length) return null;

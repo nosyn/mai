@@ -1,9 +1,9 @@
-import { Check, Copy } from "lucide-react";
+import { Check, Copy } from 'lucide-react';
 
-import { Message } from "ai";
-import { Fragment } from "react";
-import { Button } from "../../button";
-import { useCopyToClipboard } from "../hooks/use-copy-to-clipboard";
+import { Message } from 'ai';
+import { Fragment } from 'react';
+import { Button } from '@/components/ui/button';
+import { useCopyToClipboard } from '../hooks/use-copy-to-clipboard';
 import {
   DocumentFileData,
   EventData,
@@ -13,50 +13,29 @@ import {
   SourceData,
   ToolData,
   getAnnotationData,
-} from "../index";
-import ChatAvatar from "./chat-avatar";
-import { ChatEvents } from "./chat-events";
-import { ChatFiles } from "./chat-files";
-import { ChatImage } from "./chat-image";
-import { ChatSources } from "./chat-sources";
-import ChatTools from "./chat-tools";
-import Markdown from "./markdown";
+} from '../index';
+import ChatAvatar from './chat-avatar';
+import { ChatEvents } from './chat-events';
+import { ChatFiles } from './chat-files';
+import { ChatImage } from './chat-image';
+import { ChatSources } from './chat-sources';
+import ChatTools from './chat-tools';
+import Markdown from './markdown';
 
 type ContentDisplayConfig = {
   order: number;
   component: JSX.Element | null;
 };
 
-function ChatMessageContent({
-  message,
-  isLoading,
-}: {
-  message: Message;
-  isLoading: boolean;
-}) {
+function ChatMessageContent({ message, isLoading }: { message: Message; isLoading: boolean }) {
   const annotations = message.annotations as MessageAnnotation[] | undefined;
   if (!annotations?.length) return <Markdown content={message.content} />;
 
-  const imageData = getAnnotationData<ImageData>(
-    annotations,
-    MessageAnnotationType.IMAGE,
-  );
-  const contentFileData = getAnnotationData<DocumentFileData>(
-    annotations,
-    MessageAnnotationType.DOCUMENT_FILE,
-  );
-  const eventData = getAnnotationData<EventData>(
-    annotations,
-    MessageAnnotationType.EVENTS,
-  );
-  const sourceData = getAnnotationData<SourceData>(
-    annotations,
-    MessageAnnotationType.SOURCES,
-  );
-  const toolData = getAnnotationData<ToolData>(
-    annotations,
-    MessageAnnotationType.TOOLS,
-  );
+  const imageData = getAnnotationData<ImageData>(annotations, MessageAnnotationType.IMAGE);
+  const contentFileData = getAnnotationData<DocumentFileData>(annotations, MessageAnnotationType.DOCUMENT_FILE);
+  const eventData = getAnnotationData<EventData>(annotations, MessageAnnotationType.EVENTS);
+  const sourceData = getAnnotationData<SourceData>(annotations, MessageAnnotationType.SOURCES);
+  const toolData = getAnnotationData<ToolData>(annotations, MessageAnnotationType.TOOLS);
 
   const contents: ContentDisplayConfig[] = [
     {
@@ -65,16 +44,11 @@ function ChatMessageContent({
     },
     {
       order: -3,
-      component:
-        eventData.length > 0 ? (
-          <ChatEvents isLoading={isLoading} data={eventData} />
-        ) : null,
+      component: eventData.length > 0 ? <ChatEvents isLoading={isLoading} data={eventData} /> : null,
     },
     {
       order: 2,
-      component: contentFileData[0] ? (
-        <ChatFiles data={contentFileData[0]} />
-      ) : null,
+      component: contentFileData[0] ? <ChatFiles data={contentFileData[0]} /> : null,
     },
     {
       order: -1,
@@ -101,13 +75,7 @@ function ChatMessageContent({
   );
 }
 
-export default function ChatMessage({
-  chatMessage,
-  isLoading,
-}: {
-  chatMessage: Message;
-  isLoading: boolean;
-}) {
+export default function ChatMessage({ chatMessage, isLoading }: { chatMessage: Message; isLoading: boolean }) {
   const { isCopied, copyToClipboard } = useCopyToClipboard({ timeout: 2000 });
   return (
     <div className="flex items-start gap-4 pr-5 pt-5">
@@ -120,11 +88,7 @@ export default function ChatMessage({
           variant="ghost"
           className="h-8 w-8 opacity-0 group-hover:opacity-100"
         >
-          {isCopied ? (
-            <Check className="h-4 w-4" />
-          ) : (
-            <Copy className="h-4 w-4" />
-          )}
+          {isCopied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
         </Button>
       </div>
     </div>

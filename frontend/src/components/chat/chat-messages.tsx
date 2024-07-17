@@ -1,7 +1,7 @@
 import { Loader2 } from 'lucide-react';
 import { useEffect, useRef } from 'react';
 
-import { Button } from '../button';
+import { Button } from '@/components/ui/button';
 import ChatActions from './chat-actions';
 import ChatMessage from './chat-message';
 import { ChatHandler } from './chat.interface';
@@ -35,7 +35,7 @@ export default function ChatMessages(
   }, [messageLength, lastMessage]);
 
   return (
-    <div className="flex-1">
+    <div className="flex-1 relative">
       <div className="flex flex-col gap-5 divide-y overflow-y-auto pb-4" ref={scrollableChatContainerRef}>
         {props.messages.map((m, i) => {
           const isLoadingMessage = i === messageLength - 1 && props.isLoading;
@@ -53,14 +53,12 @@ export default function ChatMessages(
         </div>
       )}
       {!messageLength && starterQuestions?.length && props.append && (
-        <div className="absolute bottom-6 left-0 w-full">
-          <div className="grid grid-cols-2 gap-2 mx-20">
-            {starterQuestions.map((question, i) => (
-              <Button variant="outline" key={i} onClick={() => props.append!({ role: 'user', content: question })}>
-                {question}
-              </Button>
-            ))}
-          </div>
+        <div className="absolute bottom-6 left-2 w-full gap-1 flex flex-wrap">
+          {starterQuestions.map((question, i) => (
+            <Button variant="outline" key={i} onClick={() => props.append!({ role: 'user', content: question })}>
+              {question}
+            </Button>
+          ))}
         </div>
       )}
     </div>

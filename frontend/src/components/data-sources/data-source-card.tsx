@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 
 import Link from 'next/link';
-import { Icons } from '../ui/icons';
+import { Icons } from '@/components/icons';
 import { Button } from '../ui/button';
 import { type DataSource } from '@/lib/database/schema';
 import { APP_ROUTE } from '@/lib/const';
