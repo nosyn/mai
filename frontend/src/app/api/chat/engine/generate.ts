@@ -1,39 +1,37 @@
-import { VectorStoreIndex } from "llamaindex";
-import { storageContextFromDefaults } from "llamaindex/storage/StorageContext";
-
+/* eslint-disable turbo/no-undeclared-env-vars */
 import * as dotenv from "dotenv";
-
+import { VectorStoreIndex, storageContextFromDefaults } from "llamaindex";
+import { QdrantVectorStore } from "llamaindex/storage/vectorStore/QdrantVectorStore";
 import { getDocuments } from "./loader";
 import { initSettings } from "./settings";
-import { STORAGE_CACHE_DIR } from "./shared";
+import { checkRequiredEnvVars, getQdrantClient } from "./shared";
 
-// Load environment variables from local .env file
 dotenv.config();
 
-async function getRuntime(func: any) {
-  const start = Date.now();
-  await func();
-  const end = Date.now();
-  return end - start;
-}
+const collectionName = process.env.QDRANT_COLLECTION;
 
-async function generateDatasource() {
-  console.log(`Generating storage context...`);
-  // Split documents, create embeddings and store them in the storage context
-  const ms = await getRuntime(async () => {
-    const storageContext = await storageContextFromDefaults({
-      persistDir: STORAGE_CACHE_DIR,
-    });
-    const documents = await getDocuments();
-    await VectorStoreIndex.fromDocuments(documents, {
-      storageContext,
-    });
+async function loadAndIndex() {
+  // load objects from storage and convert them into LlamaIndex Document objects
+  const documents = await getDocuments();
+
+  // Connect to Qdrant
+  const vectorStore = new QdrantVectorStore({
+    collectionName,
+    client: getQdrantClient(),
   });
-  console.log(`Storage context successfully generated in ${ms / 1000}s.`);
+
+  const storageContext = await storageContextFromDefaults({ vectorStore });
+  await VectorStoreIndex.fromDocuments(documents, {
+    storageContext: storageContext,
+  });
+  console.log(
+    `Successfully upload embeddings to Qdrant collection ${collectionName}.`,
+  );
 }
 
 (async () => {
+  checkRequiredEnvVars();
   initSettings();
-  await generateDatasource();
+  await loadAndIndex();
   console.log("Finished generating storage.");
 })();

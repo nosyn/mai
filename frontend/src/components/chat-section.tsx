@@ -1,22 +1,16 @@
-"use client";
+'use client';
 
-import { useChat } from "ai/react";
-import { ChatInput, ChatMessages } from "./chat";
-import { Badge } from "./ui/badge";
+import { useChat } from 'ai/react';
+import { ChatInput, ChatMessages } from '@/components/chat';
+import { useClientConfig } from '@/components/chat/hooks/use-config';
+import { Badge } from './ui/badge';
 
 export default function ChatSection() {
-  const {
-    messages,
-    input,
-    isLoading,
-    handleSubmit,
-    handleInputChange,
-    reload,
-    stop,
-  } = useChat({
-    api: process.env.NEXT_PUBLIC_CHAT_API,
+  const { backend } = useClientConfig();
+  const { messages, input, isLoading, handleSubmit, handleInputChange, reload, stop, append, setInput } = useChat({
+    api: `${backend}/api/chat`,
     headers: {
-      "Content-Type": "application/json", // using JSON because of vercel/ai 2.2.26
+      'Content-Type': 'application/json', // using JSON because of vercel/ai 2.2.26
     },
     onError: (error: unknown) => {
       if (!(error instanceof Error)) throw error;
@@ -30,17 +24,15 @@ export default function ChatSection() {
       <Badge variant="outline" className="absolute right-3 top-3">
         Output
       </Badge>
-      <ChatMessages
-        messages={messages}
-        isLoading={isLoading}
-        reload={reload}
-        stop={stop}
-      />
+      <ChatMessages messages={messages} isLoading={isLoading} reload={reload} stop={stop} append={append} />
       <ChatInput
         input={input}
         handleSubmit={handleSubmit}
         handleInputChange={handleInputChange}
         isLoading={isLoading}
+        messages={messages}
+        append={append}
+        setInput={setInput}
       />
     </div>
   );

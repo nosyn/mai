@@ -1,21 +1,17 @@
-import { SimpleDocumentStore, VectorStoreIndex } from "llamaindex";
-import { storageContextFromDefaults } from "llamaindex/storage/StorageContext";
-import { STORAGE_CACHE_DIR } from "./shared";
+import * as dotenv from "dotenv";
+import { VectorStoreIndex } from "llamaindex";
+import { QdrantVectorStore } from "llamaindex/storage/vectorStore/QdrantVectorStore";
+import { checkRequiredEnvVars, getQdrantClient } from "./shared";
+
+dotenv.config();
 
 export async function getDataSource() {
-  const storageContext = await storageContextFromDefaults({
-    persistDir: `${STORAGE_CACHE_DIR}`,
+  checkRequiredEnvVars();
+  const collectionName = process.env.QDRANT_COLLECTION;
+  const store = new QdrantVectorStore({
+    collectionName,
+    client: getQdrantClient(),
   });
 
-  const numberOfDocs = Object.keys(
-    (storageContext.docStore as SimpleDocumentStore).toDict(),
-  ).length;
-
-  if (numberOfDocs === 0) {
-    return null;
-  }
-
-  return await VectorStoreIndex.init({
-    storageContext,
-  });
+  return await VectorStoreIndex.fromVectorStore(store);
 }

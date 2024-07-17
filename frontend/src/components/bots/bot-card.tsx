@@ -2,7 +2,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardFooter, CardContent }
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { Icons } from '../icons';
+import { Icons } from '@/components/icons';
 import { APP_ROUTE } from '@/lib/const';
 import { Bot } from '@/lib/database/schema';
 

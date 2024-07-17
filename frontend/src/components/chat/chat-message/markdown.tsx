@@ -17,19 +17,30 @@ const MemoizedReactMarkdown: FC<Options> = memo(
 const preprocessLaTeX = (content: string) => {
   // Replace block-level LaTeX delimiters \[ \] with $$ $$
   const blockProcessedContent = content.replace(
-    /\\\[(.*?)\\\]/gs,
+    /\\\[([\s\S]*?)\\\]/g,
     (_, equation) => `$$${equation}$$`,
   );
   // Replace inline LaTeX delimiters \( \) with $ $
   const inlineProcessedContent = blockProcessedContent.replace(
-    /\\\((.*?)\\\)/gs,
+    /\\\[([\s\S]*?)\\\]/g,
     (_, equation) => `$${equation}$`,
   );
   return inlineProcessedContent;
 };
 
+const preprocessMedia = (content: string) => {
+  // Remove `sandbox:` from the beginning of the URL
+  // to fix OpenAI's models issue appending `sandbox:` to the relative URL
+  return content.replace(/(sandbox|attachment|snt):/g, "");
+};
+
+const preprocessContent = (content: string) => {
+  return preprocessMedia(preprocessLaTeX(content));
+};
+
 export default function Markdown({ content }: { content: string }) {
-  const processedContent = preprocessLaTeX(content);
+  const processedContent = preprocessContent(content);
+
   return (
     <MemoizedReactMarkdown
       className="prose dark:prose-invert prose-p:leading-relaxed prose-pre:p-0 break-words custom-markdown"

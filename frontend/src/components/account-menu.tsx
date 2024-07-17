@@ -1,6 +1,6 @@
-import { signOut } from "@/auth";
-import { Icons } from "./icons";
-import { Button } from "./ui/button";
+import { signOut } from '@/auth';
+import { Icons } from '@/components/icons';
+import { Button } from './ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,8 +8,8 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
-import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
+} from './ui/dropdown-menu';
+import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
 
 interface AccountMenuProps {}
 
@@ -19,12 +19,7 @@ const AccountMenu = ({}: AccountMenuProps) => {
       <Tooltip>
         <TooltipTrigger asChild>
           <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="mt-auto rounded-lg"
-              aria-label="Account"
-            >
+            <Button variant="ghost" size="icon" className="mt-auto rounded-lg" aria-label="Account">
               <Icons.user className="size-5" />
             </Button>
           </DropdownMenuTrigger>
@@ -39,10 +34,10 @@ const AccountMenu = ({}: AccountMenuProps) => {
         <DropdownMenuSeparator />
         <form
           action={async () => {
-            "use server";
+            'use server';
             await signOut({
               redirect: true,
-              redirectTo: "/login",
+              redirectTo: '/login',
             });
           }}
         >

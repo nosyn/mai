@@ -1,29 +1,15 @@
-import { ChevronDown, ChevronRight, Loader2 } from "lucide-react";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import { EventData } from "./index";
+import { ChevronDown, ChevronRight, Loader2 } from 'lucide-react';
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { EventData } from '../index';
 
-export function ChatEvents({
-  data,
-  isLoading,
-}: {
-  data: EventData[];
-  isLoading: boolean;
-}) {
+export function ChatEvents({ data, isLoading }: { data: EventData[]; isLoading: boolean }) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const buttonLabel = isOpen ? "Hide events" : "Show events";
+  const buttonLabel = isOpen ? 'Hide events' : 'Show events';
 
-  const EventIcon = isOpen ? (
-    <ChevronDown className="h-4 w-4" />
-  ) : (
-    <ChevronRight className="h-4 w-4" />
-  );
+  const EventIcon = isOpen ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />;
 
   return (
     <div className="border-l-2 border-indigo-400 pl-2">

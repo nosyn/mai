@@ -1,7 +1,7 @@
 import { ContextChatEngine, Settings } from "llamaindex";
 import { getDataSource } from "./index";
 
-export async function createChatEngine() {
+export async function createChatEngine(documentIds?: string[]) {
   const index = await getDataSource();
   if (!index) {
     throw new Error(
@@ -15,6 +15,7 @@ export async function createChatEngine() {
   return new ContextChatEngine({
     chatModel: Settings.llm,
     retriever,
-    systemPrompt: process.env.SYSTEM_PROMPT,
+    // disable as a custom system prompt disables the generated context
+    // systemPrompt: process.env.SYSTEM_PROMPT,
   });
 }
